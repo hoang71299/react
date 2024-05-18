@@ -74,7 +74,6 @@ export default function BlogComment({
             setParentId("");
             setContent("")
             toggleReload();
-  
             // setComment([...comments, res.data.data]);
           })
           .catch((err) => {
@@ -87,13 +86,13 @@ export default function BlogComment({
   // const handleClick = () => {
   //   console.log("ok");
   // };
-  console.log(parentId)
+  console.log(comments)
   return (
     <>
       <div className="response-area">
         <h2>3 RESPONSES</h2>
         <ul className="media-list">
-          {comments.map(
+          {comments.sort((x,y) => x.id - y.id).map(
             (item) =>
               item.id_comment === 0 && (
                 <div key={item.id}>
@@ -131,9 +130,9 @@ export default function BlogComment({
                       </a>
                     </div>
                   </li>
-                  {comments.map(
+                  {comments.filter(x => x.id_comment === item.id).sort((x,y) => x.id - y.id).map(
                     (item2) =>
-                      item2.id_comment === item.id && (
+                      (
                         <li className="media second-media">
                           <a className="pull-left" href="#">
                             <img
@@ -156,7 +155,7 @@ export default function BlogComment({
                               </li>
                             </ul>
                             <p>
-                              {item.comment}
+                              {item2.comment}
                             </p>
                             <a
                               href="#comment-input"
@@ -409,13 +408,13 @@ export default function BlogComment({
       </div>
       {/*/Response-area*/}
       {/*/Repaly Box*/}
-      <div className="replay-box">
+      {token && <div className="replay-box">
         <div className="row">
           <div className="col-sm-12">
             <h2>Leave a replay</h2>
             <div className="text-area">
               <div className="blank-arrow">
-                <label>Your Name</label>
+                <label>{auth?.name}</label>
               </div>
               <span>*</span>
               <textarea
@@ -436,7 +435,9 @@ export default function BlogComment({
             </div>
           </div>
         </div>
-      </div>
+      </div> }
+      {!token && <span className="text-danger"> đăng nhập để bình luận </span>}
+      
     </>
   );
 }

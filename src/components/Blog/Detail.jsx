@@ -16,7 +16,7 @@ function Detail() {
       .then((res) => {
         setData(res.data.data);
 
-        // setComment(res?.data?.data?.comment)
+        setComment(res?.data?.data?.comment)
       });
   }, [reload]);
   // console.log(data)
@@ -134,7 +134,12 @@ function Detail() {
 						</div>
 					</div> */}
       {/*Comments*/}
-      <BlogComment comments={comment} setComment={setComment} id={data?.id}  toggleReload={toggleReload} />
+      <BlogComment 
+        comments={comment}
+        setComment={setComment}
+        id={data?.id}  
+        toggleReload={toggleReload} 
+      />
     </div>
   );
 }

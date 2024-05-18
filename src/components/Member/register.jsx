@@ -3,6 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Error from "../Error";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function Register() {
   const [input, setInput] = useState({
     name: "",
@@ -15,6 +16,7 @@ export default function Register() {
   const [error, setError] = useState({});
   const [file, setFile] = useState("");
   const [avatar, setAvatar] = useState("");
+  const navigate = useNavigate();
   function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
@@ -87,9 +89,10 @@ export default function Register() {
       }
     }
 
-    setError(errorSubmit);
+    
     if (flag) {
-      const { name,email,password ,  phone ,address ,level } =input
+      setError("");
+      const { name, email, password, phone, address, level } = input;
       const data = {
         name,
         email,
@@ -98,19 +101,29 @@ export default function Register() {
         address,
         avatar,
         level,
-      }
-      console.log(data)
-      axios.post("http://127.0.0.1:8000/api/register",data)
+      };
+    
+      axios.post("http://127.0.0.1:8000/api/register", data)
         .then(res => {
-          console.log(res)
-          toast.success("đăng ký thành công")
+          console.log(res);
+          if (res.data.errors) {
+            setError(res.data.errors);
+          } else if (res.data.errors && res.data.errors.email) {
+            setError(res.data.errors.email);
+          } else {
+            
+            alert("đăng ký thành công");
+            navigate('/login')
+          }
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error));
+    } else {
+      setError(errorSubmit);
     }
   };
   // console.log(input)
-  console.log(avatar)
-  console.log(file)
+  // console.log(avatar)
+  // console.log(file)
   return (
     <>
       <div className="col-sm-4">
@@ -121,30 +134,35 @@ export default function Register() {
           <form encType="multipart/form-data" onSubmit={handleForm}>
             <input
               onChange={handleInput}
+              value={input.name}
               type="text"
               name="name"
               placeholder="Name"
             />
             <input
               onChange={handleInput}
+              value={input.email}
               type="text"
               name="email"
               placeholder="Email Address"
             />
             <input
               onChange={handleInput}
+              value={input.password}
               type="password"
               name="password"
               placeholder="Password"
             />
             <input
               onChange={handleInput}
+              value={input.phone}
               type="tel"
               name="phone"
               placeholder="Phone"
             />
             <input
               onChange={handleInput}
+              value={input.address}
               type="text"
               name="address"
               placeholder="Address"
@@ -165,6 +183,7 @@ export default function Register() {
             <button type="submit" className="btn btn-default">
               Signup
             </button>
+            
           </form>
           <ToastContainer />
         </div>

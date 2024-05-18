@@ -9,6 +9,8 @@ import Detail from './components/Blog/Detail';
 import Member from './components/Member';
 import Home from './components/Home';
 import Account from './components/Account';
+import Register from './components/Member/register';
+import Login from './components/Member/login';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Router>
@@ -17,7 +19,8 @@ root.render(
         <Route exact path='/' element={<Home/>}/>
         <Route  path='/blog/list' element={<Blog/>}/>
         <Route  path='/blog/detail/:id' element={<Detail/>}/>
-        <Route path='/login' element={<Member/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/login' element={<Login/>}/>
         <Route path='/account' element={<Account/>}/>
       </Routes>
     </App>

@@ -44,18 +44,20 @@ export default function Login() {
         level: 0,
       };
       // console.log(data)
-      axios.post("http://localhost:8000/api/login", data)
+      axios
+        .post("http://localhost:8000/api/login", data)
         .then((response) => {
-          if(response.data.errors){
-            setError(response.data.errors)
-          }else{
-            localStorage.setItem("token",response.data.token)
-            localStorage.setItem("auth",JSON.stringify(response.data.Auth))
-            console.log(response)
-            navigate('/')
+          if (response.data.errors) {
+            setError(response.data.errors);
+          } else {
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("auth", JSON.stringify(response.data.Auth));
+            setInput({ email: "", password: "" });
+            // console.log(response)
+            navigate("/");
           }
         })
-        .catch(error => console.log(error))
+        .catch((error) => console.log(error));
     }
   };
   // console.log(input)
@@ -83,15 +85,13 @@ export default function Login() {
               <input type="checkbox" className="checkbox" />
               Keep me signed in
             </span>
-            <button type="submit" className="btn btn-default">
-              Login
-            </button>
+              <button type="submit" className="btn btn-default">
+                Login
+              </button>
+              <button onClick={() => navigate("/register")}>Register</button>
           </form>
         </div>
         {/*/login form*/}
-      </div>
-      <div className="col-sm-1">
-        <h2 className="or">OR</h2>
       </div>
     </>
   );
